@@ -30,16 +30,16 @@ time.sleep(3)
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 # Read the Excel file
-df = pd.read_excel('products.xlsx')
+df = pd.read_excel('products.xlsx', skiprows=3)
 
 # Iterate over the rows in the Excel file
 for i, row in df.iterrows():
     # Find the fields for the product information, and enter the information from your Excel sheet
     sku_input = driver.find_element(By.XPATH, "//input[@placeholder='SKU']")
-    sku_input.send_keys("TEST")
+    sku_input.send_keys(row.iloc[4])
 
     title_input = driver.find_element(By.XPATH, "//input[@placeholder='Name ( Ex: blue summer shirt.. )']")
-    title_input.send_keys("TEST")
+    title_input.send_keys(row.iloc[5])
     
     '''
     category_input = driver.find_element(By.ID, 'category')
