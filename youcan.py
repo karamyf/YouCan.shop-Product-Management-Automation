@@ -6,8 +6,6 @@ from selenium.webdriver.common.by import By
 import pandas as pd
 import credentials
 
-
-
 # Set up the webdriver
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.maximize_window()
@@ -35,36 +33,38 @@ driver.get('https://seller-area.youcan.shop/admin/products/create?')
 df = pd.read_excel('products.xlsx')
 
 # Iterate over the rows in the Excel file
-
-sku_input = driver.find_element(By.XPATH, "//input[@placeholder='SKU']")
-sku_input.send_keys("32002230")
-
-title_input = driver.find_element(By.XPATH, "//input[@placeholder='Name ( Ex: blue summer shirt.. )']")
-title_input.send_keys("MAL TOP WHITE 8 KG 1400 TRS MIX POWER SYSTEM ")
-
 for i, row in df.iterrows():
     # Find the fields for the product information, and enter the information from your Excel sheet
-    '''category_input = driver.find_element(By.ID, 'category')
-    category_input.send_keys(row['Category'])
-    '''
+    sku_input = driver.find_element(By.XPATH, "//input[@placeholder='SKU']")
+    sku_input.send_keys("TEST")
 
+    title_input = driver.find_element(By.XPATH, "//input[@placeholder='Name ( Ex: blue summer shirt.. )']")
+    title_input.send_keys("TEST")
     
-'''
+    '''
+    category_input = driver.find_element(By.ID, 'category')
+    category_input.send_keys(row['Category'])
+    
     compare_price_input = driver.find_element(By.ID, 'compare_price')
-    compare_price_input.send_keys(row['PVP NORMAL TTC'])
+    compare_price_input.send_keys(row['Compare Price'])
+    '''
+    price_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Price')]/following-sibling::input")
+    price_input.send_keys(666)
 
-    price_input = driver.find_element(By.ID, 'price')
-    price_input.send_keys(row['PV PROMO TTC'])
-
-    cost_price = float(row['PV PROMO TTC']) - 100
-    cost_price_input = driver.find_element(By.ID, 'cost_price')
+    cost_price = float(666) - 100
+    cost_price_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Cost price')]/following-sibling::input")
     cost_price_input.send_keys(str(cost_price))
 
     # Save the product
-    save_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+    save_button = driver.find_element(By.XPATH, '//button[contains(text(), "Save")]')
     save_button.click()
-'''
-time.sleep(5)
+
+    
+    # Wait for the product to be saved
+    time.sleep(5)
+
+    # Navigate back to the product creation page for the next product
+    driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 # Close the webdriver
 driver.quit()
