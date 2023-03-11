@@ -24,7 +24,7 @@ password_input = driver.find_element(By.ID, 'password')
 password_input.send_keys(credentials.password)
 password_input.send_keys(Keys.ENTER)
 
-time.sleep(3)
+time.sleep(6)
 
 # Navigate to the product creation page
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
@@ -41,19 +41,31 @@ for i, row in df.iterrows():
     title_input = driver.find_element(By.XPATH, "//input[@placeholder='Name ( Ex: blue summer shirt.. )']")
     title_input.send_keys(row.iloc[5])
     
+    meta_title_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Meta title')]/following-sibling::input")
+    meta_title_input.send_keys(row.iloc[5] + " Bilal Electro")
+    
+    meta_description_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Meta description')]/following-sibling::textarea")
+    meta_description_input.send_keys(row.iloc[5] + " Electro Bilal")
     '''
     category_input = driver.find_element(By.ID, 'category')
     category_input.send_keys(row['Category'])
-    
-    compare_price_input = driver.find_element(By.ID, 'compare_price')
-    compare_price_input.send_keys(row['Compare Price'])
     '''
+    
     price_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Price')]/following-sibling::input")
-    price_input.send_keys(666)
-
-    cost_price = float(666) - 100
+    price_input.send_keys(row.iloc[7])
+    
+    compare_price_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Compare at price')]/following-sibling::input")
+    compare_price_input.send_keys(row.iloc[6])
+    
     cost_price_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Cost price')]/following-sibling::input")
-    cost_price_input.send_keys(str(cost_price))
+    cost_price_input.send_keys(float(row.iloc[7]) - 100)
+    
+    '''
+    # Locate the input element for the file upload
+    image_input = driver.find_element(By.XPATH, '//input[@id="product-images-uploader"]')
+    image_input.send_keys(row.iloc[10])
+    '''
+
 
     # Save the product
     save_button = driver.find_element(By.XPATH, '//button[contains(text(), "Save")]')
