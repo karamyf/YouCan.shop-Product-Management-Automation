@@ -24,7 +24,7 @@ password_input = driver.find_element(By.ID, 'password')
 password_input.send_keys(credentials.password)
 password_input.send_keys(Keys.ENTER)
 
-time.sleep(6)
+time.sleep(7)
 
 # Navigate to the product creation page
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
@@ -60,15 +60,20 @@ for i, row in df.iterrows():
     cost_price_input = driver.find_element(By.XPATH, "//label[contains(text(), 'Cost price')]/following-sibling::input")
     cost_price_input.send_keys(float(row.iloc[7]) - 100)
     
-    '''
+    description_input = driver.find_element(By.CLASS_NAME, "fr-element")
+    description_input.send_keys(row.iloc[9])
+    
+    
     # Locate the input element for the file upload
     image_input = driver.find_element(By.XPATH, '//input[@id="product-images-uploader"]')
     image_input.send_keys(row.iloc[10])
-    '''
+    
 
 
     # Save the product
     save_button = driver.find_element(By.XPATH, '//button[contains(text(), "Save")]')
+    save_button.click()
+    time.sleep(2)
     save_button.click()
 
     
