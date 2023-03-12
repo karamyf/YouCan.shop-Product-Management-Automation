@@ -35,7 +35,7 @@ time.sleep(10)
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 # Read the Excel file
-df = pd.read_excel('products.xlsx', skiprows=16)
+df = pd.read_excel('products.xlsx', skiprows=19)
 
 # Iterate over the rows in the Excel file
 for i, row in df.iterrows():
