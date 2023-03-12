@@ -29,7 +29,7 @@ password_input = driver.find_element(By.ID, 'password')
 password_input.send_keys(credentials.password)
 password_input.send_keys(Keys.ENTER)
 
-time.sleep(7)
+time.sleep(10)
 
 # Navigate to the product creation page
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
@@ -102,7 +102,7 @@ for i, row in df.iterrows():
 
     
     # Wait for the product to be saved
-    time.sleep(5)
+    time.sleep(7)
 
     # Navigate back to the product creation page for the next product
     driver.get('https://seller-area.youcan.shop/admin/products/create?')
