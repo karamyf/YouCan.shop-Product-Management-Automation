@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select
-
+import os
 
 # Set up the webdriver
 driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -35,7 +35,7 @@ time.sleep(10)
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 # Read the Excel file
-df = pd.read_excel('products.xlsx', skiprows=3)
+df = pd.read_excel('products.xlsx', skiprows=16)
 
 # Iterate over the rows in the Excel file
 for i, row in df.iterrows():
@@ -70,12 +70,18 @@ for i, row in df.iterrows():
     description_input.send_keys(row.iloc[9])
 
 
+ 
+
     # Locate the input element for the file upload
     image_input = driver.find_element(By.XPATH, '//input[@id="product-images-uploader"]')
+
+    # Concatenate the URL of the folder and the name of the file
+    #image_path = os.path.join("C:\\Users\\pc\\Desktop\\candy pics\\", row.iloc[4]+ ".jpg")
+
+    # Enter the file path into the file input field
     image_input.send_keys(row.iloc[10])
-    
-   
-   
+
+
     #category section
 
     # find the input field and enter text from excel
@@ -92,7 +98,6 @@ for i, row in df.iterrows():
     item_text = row.iloc[0]
     item_xpath = f"//div[@class='item-info' and text()='{item_text}']"
     item = wait.until(EC.element_to_be_clickable((By.XPATH, item_xpath)))
-    time.sleep(1)
     item.click()
     time.sleep(1)
 
