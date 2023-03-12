@@ -5,6 +5,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import pandas as pd
 import credentials
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import Select
+
 
 # Set up the webdriver
 driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -34,6 +39,7 @@ df = pd.read_excel('products.xlsx', skiprows=3)
 
 # Iterate over the rows in the Excel file
 for i, row in df.iterrows():
+   
     # Find the fields for the product information, and enter the information from your Excel sheet
     sku_input = driver.find_element(By.XPATH, "//input[@placeholder='SKU']")
     sku_input.send_keys(row.iloc[4])
@@ -62,18 +68,36 @@ for i, row in df.iterrows():
     
     description_input = driver.find_element(By.CLASS_NAME, "fr-element")
     description_input.send_keys(row.iloc[9])
-    
-    
+
+
     # Locate the input element for the file upload
     image_input = driver.find_element(By.XPATH, '//input[@id="product-images-uploader"]')
     image_input.send_keys(row.iloc[10])
     
+   
+   
+    #category section
 
+    # find the input field and enter text from excel
+    category_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Start typing to search for categories']")))
+    category_input.send_keys(row.iloc[0]) # assuming the text is in the third column (index 2)
+
+    time.sleep(2)
+
+    # show the items element
+    driver.execute_script("document.querySelector('div.items').style.display = 'flex';")
+
+    # wait for the item to appear and click on it
+    wait = WebDriverWait(driver, 10)
+    item_text = row.iloc[0]
+    item_xpath = f"//div[@class='item-info' and text()='{item_text}']"
+    item = wait.until(EC.element_to_be_clickable((By.XPATH, item_xpath)))
+    time.sleep(1)
+    item.click()
+    time.sleep(1)
 
     # Save the product
     save_button = driver.find_element(By.XPATH, '//button[contains(text(), "Save")]')
-    save_button.click()
-    time.sleep(2)
     save_button.click()
 
     
