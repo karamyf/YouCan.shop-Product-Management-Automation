@@ -76,10 +76,10 @@ for i, row in df.iterrows():
     image_input = driver.find_element(By.XPATH, '//input[@id="product-images-uploader"]')
 
     # Concatenate the URL of the folder and the name of the file
-    #image_path = os.path.join("C:\\Users\\pc\\Desktop\\candy pics\\", row.iloc[4]+ ".jpg")
+    image_path = os.path.join("C:\\Users\\pc\\Desktop\\candy pics\\", row.iloc[4]+ ".jpg")
 
     # Enter the file path into the file input field
-    image_input.send_keys(row.iloc[10])
+    image_input.send_keys(image_path)
 
 
     #category section
