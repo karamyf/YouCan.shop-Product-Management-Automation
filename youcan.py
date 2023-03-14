@@ -35,7 +35,7 @@ time.sleep(10)
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 # Read the Excel file
-df = pd.read_excel('products.xlsx', skiprows=19)
+df = pd.read_excel('products moha.xlsx', skiprows=27)
 
 # Iterate over the rows in the Excel file
 for i, row in df.iterrows():
@@ -92,17 +92,18 @@ for i, row in df.iterrows():
 
     # show the items element
     driver.execute_script("document.querySelector('div.items').style.display = 'flex';")
-
     # wait for the item to appear and click on it
     wait = WebDriverWait(driver, 10)
     item_text = row.iloc[0]
     item_xpath = f"//div[@class='item-info' and text()='{item_text}']"
     item = wait.until(EC.element_to_be_clickable((By.XPATH, item_xpath)))
     item.click()
-    time.sleep(1)
+    time.sleep(2)
 
     # Save the product
     save_button = driver.find_element(By.XPATH, '//button[contains(text(), "Save")]')
+    actions = ActionChains(driver)
+    actions.move_to_element(save_button).perform()
     save_button.click()
 
     
