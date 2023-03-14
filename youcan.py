@@ -31,11 +31,13 @@ password_input.send_keys(Keys.ENTER)
 
 time.sleep(10)
 
+
+
 # Navigate to the product creation page
 driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 # Read the Excel file
-df = pd.read_excel('products moha.xlsx', skiprows=27)
+df = pd.read_excel('products moha.xlsx', skiprows=39)
 
 # Iterate over the rows in the Excel file
 for i, row in df.iterrows():
@@ -102,8 +104,6 @@ for i, row in df.iterrows():
 
     # Save the product
     save_button = driver.find_element(By.XPATH, '//button[contains(text(), "Save")]')
-    actions = ActionChains(driver)
-    actions.move_to_element(save_button).perform()
     save_button.click()
 
     
