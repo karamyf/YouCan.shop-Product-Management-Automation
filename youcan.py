@@ -11,6 +11,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select
 import os
 
+#login method
 def login():
     # Set up the webdriver
     driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -34,7 +35,7 @@ def login():
 
     return driver
 
-
+#add products from excel sheet
 def add_product(driver):
     # Navigate to the product creation page
     driver.get('https://seller-area.youcan.shop/admin/products/create?')
@@ -63,36 +64,52 @@ def add_product(driver):
         # Navigate back to the product creation page for the next product
         driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
-
+#add reviews from excel sheet
 def add_review(driver):
-    # Navigate to the reviews page
+
     driver.get("https://seller-area.youcan.shop/admin/products/reviews")
     driver.set_window_size(1936, 1096)
 
-    # Read data from Excel file
     df = pd.read_excel(r'C:\Users\pc\Desktop\Home\Work\Fiverr\Customers\Bilal Hagouch\Products\raddad\reviews\reviews.xlsx')
 
-    # Iterate over rows in the Excel file
+    # Iteration
     for i, row in df.iterrows():
         name = row['Name']
         review = row['Review']
+        image_path = row['Picture Path']
 
-        # Click on "Add a review"
         driver.find_element(By.LINK_TEXT, "Add a review").click()
 
-        # Enter data into the form
         driver.find_element(By.ID, "first-name").click()
         driver.find_element(By.ID, "first-name").send_keys(name)
-        driver.find_element(By.CSS_SELECTOR, ".input-holder > input").click()
-        driver.find_element(By.CSS_SELECTOR, ".input-holder > input").send_keys("a")
+
+        search_input = driver.find_element(By.CSS_SELECTOR, ".input-holder > input")
+        search_input.click()
+        
+        #search product
+        search_input.send_keys("قلم الآيلاينر ")
+
+        # Wait for the matching product titles to appear
+        time.sleep(1)
+
+        # Click on the first matching product
         driver.find_element(By.CSS_SELECTOR, ".item:nth-child(1) > .item-info").click()
+
         driver.find_element(By.CSS_SELECTOR, ".fr-element").click()
         element = driver.find_element(By.CSS_SELECTOR, ".fr-element")
-        driver.execute_script(f"if(arguments[0].contentEditable === 'true') {{arguments[0].innerText = '<p>{review}</p>'}}", element)
+        driver.execute_script(f"if(arguments[0].contentEditable === 'true') {{arguments[0].innerText = '{review}'}}", element)
+
+        try:
+            # Upload image if the file path exists
+            if os.path.exists(image_path):
+                uploader_input = driver.find_element(By.ID, "review-images-uploader")
+                uploader_input.send_keys(image_path)
+        except FileNotFoundError:
+            print(f"Image file not found for row {i + 1}. Skipping...")
+
+        time.sleep(2)
         driver.find_element(By.CSS_SELECTOR, ".button").click()
         driver.find_element(By.CSS_SELECTOR, "tr:nth-child(1) label").click()
-
-
 def main():
     driver = login()
 
