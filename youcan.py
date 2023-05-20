@@ -65,12 +65,12 @@ def add_product(driver):
         driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 #add reviews from excel sheet
-def add_review(driver):
-
+# Add reviews from an Excel sheet
+def add_review(driver, product_name):
     driver.get("https://seller-area.youcan.shop/admin/products/reviews")
     driver.set_window_size(1936, 1096)
 
-    df = pd.read_excel(r'C:\Users\pc\Desktop\Home\Work\Fiverr\Customers\Bilal Hagouch\Products\raddad\reviews\reviews.xlsx')
+    df = pd.read_excel(f'C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers\\Bilal Hagouch\\Products\\{product_name}\\reviews\\reviews.xlsx')
 
     # Iteration
     for i, row in df.iterrows():
@@ -86,8 +86,8 @@ def add_review(driver):
         search_input = driver.find_element(By.CSS_SELECTOR, ".input-holder > input")
         search_input.click()
         
-        #search product
-        search_input.send_keys("قلم الآيلاينر ")
+        # Search product
+        search_input.send_keys(product_name)
 
         # Wait for the matching product titles to appear
         time.sleep(1)
@@ -110,6 +110,10 @@ def add_review(driver):
         time.sleep(2)
         driver.find_element(By.CSS_SELECTOR, ".button").click()
         driver.find_element(By.CSS_SELECTOR, "tr:nth-child(1) label").click()
+
+
+
+
 def main():
     driver = login()
 
@@ -121,7 +125,8 @@ def main():
     if choice == "1":
         add_product(driver)
     elif choice == "2":
-        add_review(driver)
+        product_name = input("Enter the product name: ")
+        add_review(driver, product_name)
     else:
         print("Invalid choice")
 
