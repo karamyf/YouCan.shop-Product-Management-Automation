@@ -29,10 +29,10 @@ def add_product(driver, product_name):
         driver.get('https://seller-area.youcan.shop/admin/products/create?')
 
 
-def add_review(driver, product_name):
+def add_review(driver, product_name,client_name):
     driver.get("https://seller-area.youcan.shop/admin/products/reviews")
     driver.set_window_size(1936, 1096)
-    df = pd.read_excel(f'C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers\\Bilal Hagouch\\Products\\{product_name}\\reviews\\reviews.xlsx')
+    df = pd.read_excel(f'C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers\\{client_name}\\Products\\{product_name}\\reviews\\reviews.xlsx')
 
     for i, row in df.iterrows():
         name = row['Name']
@@ -52,8 +52,6 @@ def add_review(driver, product_name):
         time.sleep(2)
         driver.find_element(By.CSS_SELECTOR, ".button").click()
         driver.find_element(By.CSS_SELECTOR, "tr:nth-child(1) label").click()
-
-# product_creation.py
 
 
 def new_product(client_name, product_name):
