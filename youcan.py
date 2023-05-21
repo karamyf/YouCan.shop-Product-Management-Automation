@@ -112,21 +112,44 @@ def add_review(driver, product_name):
         driver.find_element(By.CSS_SELECTOR, "tr:nth-child(1) label").click()
 
 
+# Create folders for a new product
+def new_product(client_name, product_name):
+    base_path = f"C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers\\{client_name}\\Products\\{product_name}"
+    
+    # Create folders
+    os.makedirs(os.path.join(base_path, "images", "variants"))
+    os.makedirs(os.path.join(base_path, "reviews", "images"))
+    os.makedirs(os.path.join(base_path, "gifs"))
+    
+    # Create reviews.xlsx file
+    reviews_df = pd.DataFrame(columns=["Name", "Review", "Picture Path"])
+    reviews_file_path = os.path.join(base_path, "reviews", "reviews.xlsx")
+    reviews_df.to_excel(reviews_file_path, index=False)
+
+    print(f"New product '{product_name}' for client '{client_name}' created successfully.")
+
 
 
 def main():
-    driver = login()
 
     print("Menu:")
     print("1 - Add product")
     print("2 - Add review")
+    print("3 - Create new product")
     choice = input("Enter your choice: ")
 
     if choice == "1":
+        driver = login()
         add_product(driver)
     elif choice == "2":
+        driver = login()
         product_name = input("Enter the product name: ")
         add_review(driver, product_name)
+    elif choice == "3":
+        client_name = input("Enter the client name: ")
+        product_name = input("Enter the product name: ")
+        new_product(client_name, product_name)
+    
     else:
         print("Invalid choice")
 
