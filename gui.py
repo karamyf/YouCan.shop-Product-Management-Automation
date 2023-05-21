@@ -3,14 +3,25 @@ from product_management import add_product, add_review, new_product
 from login import login
 import os
 
+# Change your workflow
+workflow = "C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers\\"
+
 # Create the GUI
 root = Tk()
-root.title("YouCan.shop Product Management")
+root.title("YouCan Product Management")
+
+# Styling
+root.geometry("400x300")
+root.configure(bg="#f5f5f5")
+
+label_font = ("Arial", 12, "bold")
+button_font = ("Arial", 10)
+entry_font = ("Arial", 10)
 
 # Labels
-client_label = Label(root, text="Client Name:")
+client_label = Label(root, text="Client Name:", font=label_font, bg="#f5f5f5")
 client_label.grid(row=0, column=0, padx=10, pady=10)
-product_label = Label(root, text="Product Name:")
+product_label = Label(root, text="Product Name:", font=label_font, bg="#f5f5f5")
 product_label.grid(row=1, column=0, padx=10, pady=10)
 
 # Dropdown menu variables
@@ -19,16 +30,18 @@ selected_product = StringVar(root)
 
 # Dropdown menus
 clients_menu = OptionMenu(root, selected_client, "")
-clients_menu.grid(row=0, column=1, padx=10, pady=10)
+clients_menu.config(font=entry_font)
+clients_menu.grid(row=0, column=1, padx=10, pady=10, sticky="w")
 
 products_menu = OptionMenu(root, selected_product, "")
-products_menu.grid(row=1, column=1, padx=10, pady=10)
+products_menu.config(font=entry_font)
+products_menu.grid(row=1, column=1, padx=10, pady=10, sticky="w")
 
 # Update products menu based on selected client
 def update_products_menu(*args):
     client_name = selected_client.get()
     if client_name:
-        products = os.listdir(f"C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers\\{client_name}\\Products")
+        products = os.listdir(f"{workflow}\\{client_name}\\Products")
         products_menu["menu"].delete(0, "end")  # Clear previous menu options
         for product in products:
             products_menu["menu"].add_command(label=product, command=lambda p=product: selected_product.set(p))
@@ -40,7 +53,7 @@ def search_entries():
     search_term = search_entry.get()
     if search_term:
         # Search for clients
-        clients = os.listdir("C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers")
+        clients = os.listdir(workflow)
         filtered_clients = [client for client in clients if search_term.lower() in client.lower()]
         clients_menu["menu"].delete(0, "end")
         for client in filtered_clients:
@@ -49,17 +62,17 @@ def search_entries():
         # Search for products
         client_name = selected_client.get()
         if client_name:
-            products = os.listdir(f"C:\\Users\\pc\\Desktop\\Home\\Work\\Fiverr\\Customers\\{client_name}\\Products")
+            products = os.listdir(f"{workflow}\\{client_name}\\Products")
             filtered_products = [product for product in products if search_term.lower() in product.lower()]
             products_menu["menu"].delete(0, "end")
             for product in filtered_products:
                 products_menu["menu"].add_command(label=product, command=lambda p=product: selected_product.set(p))
 
 # Search entry field
-search_entry = Entry(root)
-search_entry.grid(row=2, column=0, padx=10, pady=10)
-search_button = Button(root, text="Search", command=search_entries)
-search_button.grid(row=2, column=1, padx=10, pady=10)
+search_entry = Entry(root, font=entry_font)
+search_entry.grid(row=2, column=0, padx=10, pady=10, sticky="w")
+search_button = Button(root, text="Search", command=search_entries, font=button_font)
+search_button.grid(row=2, column=1, padx=10, pady=10, sticky="w")
 
 # Buttons
 def add_product_button_click():
@@ -84,11 +97,11 @@ def create_product_button_click():
     if client_name and product_name:
         new_product(client_name, product_name)
 
-add_product_button = Button(root, text="Add Product", command=add_product_button_click)
+add_product_button = Button(root, text="Add Product", command=add_product_button_click, font=button_font)
 add_product_button.grid(row=3, column=0, padx=10, pady=10)
-add_review_button = Button(root, text="Add Review", command=add_review_button_click)
+add_review_button = Button(root, text="Add Review", command=add_review_button_click, font=button_font)
 add_review_button.grid(row=3, column=1, padx=10, pady=10)
-create_product_button = Button(root, text="Create New Product", command=create_product_button_click)
+create_product_button = Button(root, text="Create New Product", command=create_product_button_click, font=button_font)
 create_product_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
 # Start the GUI main loop
